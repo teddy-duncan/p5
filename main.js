@@ -1,21 +1,29 @@
 function preload(){
-    img= loadImage('https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__340.jpg');
+
 }
 function setup(){
-    canvas=createCanvas(640,480);
-    canvas.position(110,250);
-
+    canvas=createCanvas(300,300);
+    canvas.center();
+video=createCapture(VIDEO);
+video.size(300,300);
+video.hide();
+poseNet=ml5.poseNet(video,modelLoaded);
+poseNet.on('pose',gotPoses);
 }
 function draw(){
-    image(img,250,170,70,70);
-    fill(0,128,0);
-circle(220,160,30);
-circle(330,160,30);
-circle(330,240,30);
-circle(220,240,30);
-
+image(video,0,0,300,300);   
 }
 function take_snapshot(){
-    save('student_name.png');
+save('myfilterimage.png')  
+}
+function modelLoaded(){
+console.log("poseNet is initialized");
 
+}
+function gotPoses(results){
+if(results.length>0){
+console.log(results);
+console.log("nose x="+results[0].pose.nose.x);
+console.log("nose y="+results[0].pose.nose.y);
+}
 }
